@@ -51,7 +51,7 @@ function onLoad()
                             self.reload()
 
                             log('Jeopardy web buzzer object reloaded with latest updates from GitHub.')
-                        end, 180)
+                        end, 600)
                     end
                 end)
             end
