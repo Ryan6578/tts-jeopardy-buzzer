@@ -22,6 +22,8 @@ function onLoad()
     if buzzerModSpawned == nil then
         scriptObject.setVar('buzzerModSpawned', self.guid)
 
+        log('Jeopardy web buzzer object spawned for the first time. Checking for updates...')
+
         -- Update the buzzer mod to the latest version on GitHub (starting with XML first)
         WebRequest.get("https://raw.githubusercontent.com/Ryan6578/tts-jeopardy-buzzer/main/src/tts/object.xml", function(xmlRequest)
             if xmlRequest.is_error then
@@ -44,13 +46,15 @@ function onLoad()
 
                         log('Latest LUA successfully retrieved and set from GitHub.')
 
-                        -- Reload this object with the updated XML and LUA
-                        self.reload()
+                        Wait.frames(function()
+                            -- Reload this object with the updated XML and LUA
+                            self.reload()
+                        end, 180)
                     end
                 end)
             end
         end)
-        
+
         return
     end
 
