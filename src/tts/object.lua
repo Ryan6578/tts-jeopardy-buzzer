@@ -12,13 +12,47 @@ playerColors = {'Blue', 'Brown', 'Green', 'Orange', 'Pink', 'Purple', 'Red', 'Te
 
 function onLoad()
     -- Delete this object if there's already a web buzzer
-    if scriptObject.getVar('buzzerModSpawned') == true then
+    local buzzerModSpawned = scriptObject.getVar('buzzerModSpawned')
+    if buzzerModSpawned ~= nil and buzzerModSpawned ~= self.guid then
         self.destroy()
         printToAll('Only one Jeopardy web buzzer can be spawned in a game session.')
         return
     end
 
-    scriptObject.setVar('buzzerModSpawned', true)
+    if buzzerModSpawned == nil then
+        scriptObject.setVar('buzzerModSpawned', self.guid)
+
+        -- Update the buzzer mod to the latest version on GitHub (starting with XML first)
+        WebRequest.get("https://raw.githubusercontent.com/Ryan6578/tts-jeopardy-buzzer/main/src/tts/object.xml", function(xmlRequest)
+            if xmlRequest.is_error then
+                log(xmlRequest.error)
+                printToAll('An error occurred while trying to get the XML for the Jeopardy web buzzer object from GitHub! Check the logs tab for more information.')
+            else
+                -- Set the XML accordingly
+                self.UI.setXml(xmlRequest.text)
+
+                log('Latest XML successfully retrieved and set from GitHub.')
+
+                -- Request the LUA for this object
+                WebRequest.get("https://raw.githubusercontent.com/Ryan6578/tts-jeopardy-buzzer/main/src/tts/object.lua", function(luaRequest)
+                    if luaRequest.is_error then
+                        log(request.error)
+                        printToAll('An error occurred while trying to get the LUA for the Jeopardy web buzzer object from GitHub! Check the logs tab for more information.')
+                    else
+                        -- Set the LUA accordingly
+                        self.setLuaScript(luaRequest.text)
+
+                        log('Latest LUA successfully retrieved and set from GitHub.')
+
+                        -- Reload this object with the updated XML and LUA
+                        self.reload()
+                    end
+                end)
+            end
+        end)
+        
+        return
+    end
 
     -- Disable all other buzzer modes
     scriptObject.setVar('buzzerSpam', false)
