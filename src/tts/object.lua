@@ -49,6 +49,8 @@ function onLoad()
                         Wait.frames(function()
                             -- Reload this object with the updated XML and LUA
                             self.reload()
+
+                            log('Jeopardy web buzzer object reloaded with latest updates from GitHub.')
                         end, 180)
                     end
                 end)
@@ -177,7 +179,7 @@ function setLinksAndQRCodes()
         Wait.frames(function()
             self.UI.setAttribute(playerColor .. 'QR', 'image', data.token)
             self.UI.setAttribute(playerColor .. 'Text', 'text', webBuzzerUrl .. '/?token=' .. data.token)
-        end, 180)
+        end, 500)
         coroutine.yield(0)
     end
     return 1
