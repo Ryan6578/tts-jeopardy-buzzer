@@ -1,0 +1,156 @@
+<Defaults>
+    <Panel
+        class="WebBuzzerPanel"
+        width="100"
+        height="100"
+        position="0 0 -55">
+    </Panel>
+
+    <Image
+        class="WebBuzzerQR"
+        height="80"
+        width="80"
+        rectAlignment="UpperCenter"
+        preserveAspect="true"
+        offsetXY="0 -5">
+    </Image>
+
+    <InputField
+        class="WebBuzzerLink"
+        text=" "
+        height="75"
+        width="850"
+        fontSize="50"
+        rectAlignment="LowerCenter"
+        scale="0.1 0.1 0.1"
+        offsetXY="0 5"
+        textAlignment="MiddleCenter"
+        readOnly="true">
+    </InputField>
+</Defaults>
+
+<Panel
+    id="RedWebToken"
+    visibility="Red"
+    class="WebBuzzerPanel">
+    <Image
+        id="RedQR"
+        class="WebBuzzerQR"
+        />
+    <InputField
+        id="RedText"
+        class="WebBuzzerLink"
+        />
+</Panel>
+
+<Panel
+    id="WhiteWebToken"
+    visibility="White"
+    class="WebBuzzerPanel">
+    <Image
+        id="WhiteQR"
+        class="WebBuzzerQR"
+        />
+    <InputField
+        id="WhiteText"
+        class="WebBuzzerLink"
+        />
+</Panel>
+
+<Panel
+    id="BrownWebToken"
+    visibility="Brown"
+    class="WebBuzzerPanel">
+    <Image
+        id="BrownQR"
+        class="WebBuzzerQR"
+        />
+    <InputField
+        id="BrownText"
+        class="WebBuzzerLink"
+        />
+</Panel>
+
+<Panel
+    id="GreenWebToken"
+    visibility="Green"
+    class="WebBuzzerPanel">
+    <Image
+        id="GreenQR"
+        class="WebBuzzerQR"
+        />
+    <InputField
+        id="GreenText"
+        class="WebBuzzerLink"
+        />
+</Panel>
+
+<Panel
+    id="BlueWebToken"
+    visibility="Blue"
+    class="WebBuzzerPanel">
+    <Image
+        id="BlueQR"
+        class="WebBuzzerQR"
+        />
+    <InputField
+        id="BlueText"
+        class="WebBuzzerLink"
+        />
+</Panel>
+
+<Panel
+    id="OrangeWebToken"
+    visibility="Orange"
+    class="WebBuzzerPanel">
+    <Image
+        id="OrangeQR"
+        class="WebBuzzerQR"
+        />
+    <InputField
+        id="OrangeText"
+        class="WebBuzzerLink"
+        />
+</Panel>
+
+<Panel
+    id="YellowWebToken"
+    visibility="Yellow"
+    class="WebBuzzerPanel">
+    <Image
+        id="YellowQR"
+        class="WebBuzzerQR"
+        />
+    <InputField
+        id="YellowText"
+        class="WebBuzzerLink"
+        />
+</Panel>
+
+<Panel
+    id="PinkWebToken"
+    visibility="Pink"
+    class="WebBuzzerPanel">
+    <Image
+        id="PinkQR"
+        class="WebBuzzerQR"
+        />
+    <InputField
+        id="PinkText"
+        class="WebBuzzerLink"
+        />
+</Panel>
+
+<Panel
+    id="PurpleWebToken"
+    visibility="Purple"
+    class="WebBuzzerPanel">
+    <Image
+        id="PurpleQR"
+        class="WebBuzzerQR"
+        />
+    <InputField
+        id="PurpleText"
+        class="WebBuzzerLink"
+        />
+</Panel>

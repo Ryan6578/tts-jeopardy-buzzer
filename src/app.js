@@ -3,6 +3,7 @@ const express = require('express');
 const axios = require('axios');
 const http = require('http');
 const WebSocket = require('ws');
+const path = require('path');
 const { v4 } = require('uuid');
 const { Level, log, generatePlayerToken } = require('./util.js');
 
@@ -71,8 +72,8 @@ const sessions = new Map();
 const acceptBuzzing = JSON.stringify({ type: 'accept_buzz' });
 const denyBuzzing = JSON.stringify({ type: 'deny_buzz' });
 
-// Serves the static buzzer page
-app.use(express.static('public'));
+// Static web pages
+app.use(express.static(path.join(__dirname, 'public')));
 
 // API endpoints
 app.post('/api/session', startSession);                                     // Creates a new Jeopardy session
