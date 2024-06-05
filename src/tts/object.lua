@@ -58,8 +58,6 @@ function onLoad()
         end)
 
         return
-    else
-        self.UI.setXml(self.UI.getXml())
     end
 
     -- Disable all other buzzer modes
