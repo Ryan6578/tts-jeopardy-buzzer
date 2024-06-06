@@ -63,7 +63,7 @@ function onLoad()
             end)
         end,
         function()
-            return not self.spawning ant not self.loading_custom
+            return not self.spawning and not self.loading_custom
         end)
 
         return
