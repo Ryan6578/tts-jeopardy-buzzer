@@ -26,39 +26,44 @@ function onLoad()
             -- Wait until object is done spawning and loading
         end
 
-        log('Jeopardy web buzzer object spawned for the first time. Checking for updates...')
+        Wait.condition(function(),
+            log('Jeopardy web buzzer object spawned for the first time. Checking for updates...')
 
-        -- Update the buzzer mod to the latest version on GitHub (starting with XML first)
-        WebRequest.get("https://raw.githubusercontent.com/Ryan6578/tts-jeopardy-buzzer/main/src/tts/object.xml", function(xmlRequest)
-            if xmlRequest.is_error then
-                log(xmlRequest.error)
-                printToAll('An error occurred while trying to get the XML for the Jeopardy web buzzer object from GitHub! Check the logs tab for more information.')
-            else
-                -- Set the XML accordingly
-                self.UI.setXml(xmlRequest.text)
+            -- Update the buzzer mod to the latest version on GitHub (starting with XML first)
+            WebRequest.get("https://raw.githubusercontent.com/Ryan6578/tts-jeopardy-buzzer/main/src/tts/object.xml", function(xmlRequest)
+                if xmlRequest.is_error then
+                    log(xmlRequest.error)
+                    printToAll('An error occurred while trying to get the XML for the Jeopardy web buzzer object from GitHub! Check the logs tab for more information.')
+                else
+                    -- Set the XML accordingly
+                    self.UI.setXml(xmlRequest.text)
 
-                log('Latest XML successfully retrieved and set from GitHub.')
+                    log('Latest XML successfully retrieved and set from GitHub.')
 
-                -- Request the LUA for this object
-                WebRequest.get("https://raw.githubusercontent.com/Ryan6578/tts-jeopardy-buzzer/main/src/tts/object.lua", function(luaRequest)
-                    if luaRequest.is_error then
-                        log(request.error)
-                        printToAll('An error occurred while trying to get the LUA for the Jeopardy web buzzer object from GitHub! Check the logs tab for more information.')
-                    else
-                        -- Set the LUA accordingly
-                        self.setLuaScript(luaRequest.text)
+                    -- Request the LUA for this object
+                    WebRequest.get("https://raw.githubusercontent.com/Ryan6578/tts-jeopardy-buzzer/main/src/tts/object.lua", function(luaRequest)
+                        if luaRequest.is_error then
+                            log(request.error)
+                            printToAll('An error occurred while trying to get the LUA for the Jeopardy web buzzer object from GitHub! Check the logs tab for more information.')
+                        else
+                            -- Set the LUA accordingly
+                            self.setLuaScript(luaRequest.text)
 
-                        log('Latest LUA successfully retrieved and set from GitHub.')
+                            log('Latest LUA successfully retrieved and set from GitHub.')
 
-                        Wait.frames(function()
-                            -- Reload this object with the updated XML and LUA
-                            self.reload()
+                            Wait.frames(function()
+                                -- Reload this object with the updated XML and LUA
+                                self.reload()
 
-                            log('Jeopardy web buzzer object reloaded with latest updates from GitHub.')
-                        end, 60)
-                    end
-                end)
-            end
+                                log('Jeopardy web buzzer object reloaded with latest updates from GitHub.')
+                            end, 60)
+                        end
+                    end)
+                end
+            end)
+        end,
+        function()
+            return not self.spawning ant not self.loading_custom
         end)
 
         return
