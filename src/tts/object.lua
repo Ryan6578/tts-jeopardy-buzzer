@@ -48,7 +48,8 @@ function onLoad()
 
                         Wait.frames(function()
                             -- Reload this object with the updated XML and LUA
-                            self.reload()
+                            --self.reload()
+                            getObjectFromGUID(self.guid).call('onLoad')
 
                             log('Jeopardy web buzzer object reloaded with latest updates from GitHub.')
                         end, 500)
