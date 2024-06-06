@@ -26,7 +26,7 @@ function onLoad()
             -- Wait until object is done spawning and loading
         end
 
-        Wait.condition(function(),
+        Wait.condition(function()
             log('Jeopardy web buzzer object spawned for the first time. Checking for updates...')
 
             -- Update the buzzer mod to the latest version on GitHub (starting with XML first)
