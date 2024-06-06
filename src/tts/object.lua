@@ -22,10 +22,6 @@ function onLoad()
     if buzzerModSpawned == nil then
         scriptObject.setVar('buzzerModSpawned', self.guid)
 
-        while self.spawning or self.loading_custom do
-            -- Wait until object is done spawning and loading
-        end
-
         Wait.condition(function()
             log('Jeopardy web buzzer object spawned for the first time. Checking for updates...')
 
