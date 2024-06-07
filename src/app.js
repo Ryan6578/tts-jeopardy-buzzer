@@ -221,9 +221,10 @@ wss.on('connection', (ws, req) => {
         // Only if we're accepting buzzes or if player hasn't buzzed in yet
         if(sessions.get(sessionID).pendingRes == undefined || sessions.get(sessionID).buzzes.has(token)) return;
 
-        sessions.get(sessionID).buzzes.set(token, new Date() - sessions.get(sessionID).players.get(token).ping)
+        const buzzMinusLatency = new Date() - sessions.get(sessionID).players.get(token).ping;
+        sessions.get(sessionID).buzzes.set(token, buzzMinusLatency)
         
-        log(Level.INFO, `Player with token ${token} has buzzed in at: ${message.time}`)
+        log(Level.INFO, `Player with token ${token} has buzzed in at: ${message.time} (calculated time: ${new Date(buzzMinusLatency).toISOString()})`);
 
         if(sessions.get(sessionID).buzzes.size == 1) {
             clearTimeout(sessions.get(sessionID).timer);
@@ -236,10 +237,11 @@ wss.on('connection', (ws, req) => {
                         log(Level.ERROR, `Error sending websocket message to ${player}: ${error}`);
                     }
 
-                    if(winner == undefined || sessions.get(sessionID).buzzes.get(player) < winner.time) {
+                    const playerBuzzTime = sessions.get(sessionID).buzzes.get(playerToken)
+                    if(playerBuzzTime != null && (winner == undefined || playerBuzzTime < winner.time)) {
                         winner = {
                             token: playerToken,
-                            time: sessions.get(sessionID).buzzes.get(playerToken)
+                            time: playerBuzzTime
                         };
                     }
                 }
