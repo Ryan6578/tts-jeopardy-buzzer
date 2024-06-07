@@ -177,7 +177,10 @@ function onChat(message, player)
         return true
     end
 
-    local command = string.gmatch(message, "[^%s]+")
+    local command = {}
+    for arg in string.gmatch(message, "[^%s]+") do
+        table.insert(command, arg)
+    end
 
     if command[1]:lower() ~= "!jwb" then
         -- Command isn't for the Jeopardy web buzzer
@@ -230,7 +233,7 @@ function onChat(message, player)
     else
         -- Unknown subcommand
         player.print("ERROR: Unknown sub-command.") 
-            
+
     end
 
     return false
