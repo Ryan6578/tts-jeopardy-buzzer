@@ -217,7 +217,7 @@ function onChat(message, player)
             return false
         end
 
-        WebRequest.post(webBuzzerUrl .. '/api/session/' .. webBuzzerSessionID .. '/player?steamIDs=' .. seatedPlayers, {}, function(request)
+        WebRequest.post(webBuzzerUrl .. '/api/session/' .. webBuzzerSessionID .. '/player?steamIDs=' .. command[3], {}, function(request)
             if request.is_error then
                 print("Web buzzer request failed: " .. request.error)
                 return
