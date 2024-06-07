@@ -128,11 +128,9 @@ setInterval(() => {
                 ping: player.ping_tracker.length > 0 && player.ws != undefined ? player.ping : -1
             });
         }
-    }
 
-    const pingMessage = JSON.stringify({ type: 'ping_list', players: pingData});
+        const pingMessage = JSON.stringify({ type: 'ping_list', players: pingData});
 
-    for(const session of sessions.values()) {
         for(const player of session.players.values()) {
             try {
                 if(player.ws != undefined)
@@ -141,6 +139,8 @@ setInterval(() => {
                 log(Level.ERROR, `Error sending websocket message to ${token}: ${error}`);
             }
         }
+
+        pingData = [];
     }
 }, config.ping_interval * config.ping_max_samples);
 
