@@ -309,24 +309,8 @@ function webBuzzerRoutine()
             if randomBuzzerWinner ~= nil then
                 broadcastToAll(Player[randomBuzzerWinner].steam_name .. ' buzzed in first!')
             else
-                -- Retrieve winner name from API
-                WebRequest.get(webBuzzerUrl .. '/api/player/?steamIDs=' .. responseData.winner, function(request)
-                    if request.is_error then
-                        print("Web buzzer request failed: " .. request.error)
-                        broadcastToAll(webBuzzerPlayerMap[responseData.winner] .. ' buzzed in first!')
-                        return
-                    end
-        
-                    local responseData = JSON.decode(request.text)
-
-                    if responseData.status == "error" then
-                        print("Web buzzer request failed: " .. request.message)
-                        broadcastToAll(webBuzzerPlayerMap[responseData.winner] .. ' buzzed in first!')
-                        return
-                    end
-
-                    broadcastToAll(responseData.players[1].profileName .. ' buzzed in first!')
-                end)
+                -- Assume this is a generated player
+                broadcastToAll(webBuzzerPlayerMap[responseData.winner] .. ' buzzed in first!')
             end
 
             getObjectFromGUID('9fd549').AssetBundle.playTriggerEffect(0)
@@ -334,11 +318,13 @@ function webBuzzerRoutine()
             scriptObject.call('resetRandomBuzzers')
             scriptObject.call('lockBuzzers')
             
-            --Animate nametag and buzzer
-            buzzerIndex = scriptObject.call('getButtonIndex', 'buzzerLabel' .. randomBuzzerWinner .. 'Click')
-            --buzzerIndex = getButtonIndex('buzzerLabel' .. randomBuzzerWinner .. 'Click')
-            local buzzerY = 1.5
-            scriptObject.editButton({index = buzzerIndex, font_color = {1, 1, 1}})
+            --Animate nametag and buzzer (only if buzzer winner isn't nil)
+            if randomBuzzerWinner ~= nil then
+                buzzerIndex = scriptObject.call('getButtonIndex', 'buzzerLabel' .. randomBuzzerWinner .. 'Click')
+                --buzzerIndex = getButtonIndex('buzzerLabel' .. randomBuzzerWinner .. 'Click')
+                local buzzerY = 1.5
+                scriptObject.editButton({index = buzzerIndex, font_color = {1, 1, 1}})
+            end
 
             --[[for i = 0.01, 2, 0.01 do
                 Wait.time(function()
