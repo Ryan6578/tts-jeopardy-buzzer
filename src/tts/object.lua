@@ -93,6 +93,12 @@ function onLoad()
                     seatedPlayers = (seatedPlayers .. (seatedPlayers == '' and Player[color].steam_id or (',' .. Player[color].steam_id)))
                 end
             end
+
+            if seatedPlayers == '' then
+                -- No players to register
+                return
+            end
+
             WebRequest.post(webBuzzerUrl .. '/api/session/' .. webBuzzerSessionID .. '/player?steamIDs=' .. seatedPlayers, {}, function(request)
                 if request.is_error then
                     print("Web buzzer request failed: " .. request.error)
@@ -179,7 +185,7 @@ function onChat(message, player)
 
     local command = {}
     for arg in string.gmatch(message, "[^%s]+") do
-        table.insert(command, arg)
+        table.insert(command, arg:lower())
     end
 
     if command[1]:lower() ~= "!jwb" then
@@ -193,9 +199,9 @@ function onChat(message, player)
         return false
     end
 
-    local subCommand = command[2]:lower()
+    local subCommand = command[2]
 
-    if subCommand == "beta" then
+    if command == "beta" then
         -- Switch to the beta branch
         player.print("Coming soon!")
 
