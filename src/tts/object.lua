@@ -185,7 +185,7 @@ function onChat(message, player)
 
     local command = {}
     for arg in string.gmatch(message, "[^%s]+") do
-        table.insert(command, arg:lower())
+        table.insert(command, arg)
     end
 
     if command[1]:lower() ~= "!jwb" then
@@ -199,7 +199,7 @@ function onChat(message, player)
         return false
     end
 
-    local subCommand = command[2]
+    local subCommand = command[2]:lower()
 
     if command == "beta" then
         -- Switch to the beta branch
