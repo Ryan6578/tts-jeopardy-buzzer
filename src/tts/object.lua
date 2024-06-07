@@ -170,6 +170,73 @@ function onPlayerDisconnect(player)
         end)
 end
 
+function onChat(message, player)
+
+    if not player.admin and not player.host then
+        -- Player isn't authorized to run commands
+        return true
+    end
+
+    local command = string.gmatch(message, "[^%s]+")
+
+    if command[1]:lower() ~= "!jwb" then
+        -- Command isn't for the Jeopardy web buzzer
+        return true
+    end
+
+    -- Command must inclue a sub-command
+    if #command < 2 then
+        player.print("ERROR: Expected a sub-command to !jwb.")
+        return false
+    end
+
+    local subCommand = command[2]:lower()
+
+    if subCommand == "beta" then
+        -- Switch to the beta branch
+        player.print("Coming soon!")
+
+    elseif subCommand == "prod" then
+        -- Switch to the main branch
+        player.print("Coming soon!")
+    
+    elseif subCommand == "genplayer" then
+        -- Generate a virtual player based on a specified Steam64ID
+        if #command ~= 3 then
+            -- Need a third arg for the Steam64ID
+            player.print("ERROR: Expected a sub-command to !jwb.")
+            return false
+        end
+
+        WebRequest.post(webBuzzerUrl .. '/api/session/' .. webBuzzerSessionID .. '/player?steamIDs=' .. seatedPlayers, {}, function(request)
+            if request.is_error then
+                print("Web buzzer request failed: " .. request.error)
+                return
+            end
+
+            local responseData = JSON.decode(request.text)
+
+            webBuzzerLinks = responseData
+
+            startLuaCoroutine(self, 'setLinksAndQRCodes')
+
+            player.print('Generated buzzer link for player "' .. responseData[1].steamID .. '": ' .. webBuzzerUrl .. '/?token=' .. responseData[1].token )
+        end)
+
+    elseif subComment == "help" then
+        -- Help page for the mod
+        player.print("Coming soon!")
+
+    else
+        -- Unknown subcommand
+        player.print("ERROR: Unknown sub-command.") 
+            
+    end
+
+    return false
+
+end
+
 function setLinksAndQRCodes()
     for _,data in ipairs(webBuzzerLinks) do
         webBuzzerPlayerMap[data.token] = data.steamID
@@ -177,10 +244,12 @@ function setLinksAndQRCodes()
         self.UI.setCustomAssets(table.insert(self.UI.getCustomAssets(), {name = data.token, url = 'https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=https://j.robford.me/?token=' .. data.token}))
         coroutine.yield(0)
         local playerColor = findColorBySteamID(data.steamID)
-        Wait.frames(function()
-            self.UI.setAttribute(playerColor .. 'QR', 'image', data.token)
-            self.UI.setAttribute(playerColor .. 'Text', 'text', webBuzzerUrl .. '/?token=' .. data.token)
-        end, 240)
+        if playerColor ~= nil then
+            Wait.frames(function()
+                self.UI.setAttribute(playerColor .. 'QR', 'image', data.token)
+                self.UI.setAttribute(playerColor .. 'Text', 'text', webBuzzerUrl .. '/?token=' .. data.token)
+            end, 240)
+        end
         coroutine.yield(0)
     end
     return 1
@@ -228,7 +297,28 @@ function webBuzzerRoutine()
 
             local randomBuzzerWinner = findColorBySteamID(webBuzzerPlayerMap[responseData.winner])
 
-            broadcastToAll(Player[randomBuzzerWinner].steam_name .. ' buzzed in first!')
+            if randomBuzzerWinner ~= nil then
+                broadcastToAll(Player[randomBuzzerWinner].steam_name .. ' buzzed in first!')
+            else
+                -- Retrieve winner name from API
+                WebRequest.get(webBuzzerUrl .. '/api/player/?steamIDs=' .. responseData.winner, function(request)
+                    if request.is_error then
+                        print("Web buzzer request failed: " .. request.error)
+                        broadcastToAll(webBuzzerPlayerMap[responseData.winner] .. ' buzzed in first!')
+                        return
+                    end
+        
+                    local responseData = JSON.decode(request.text)
+
+                    if responseData.status == "error" then
+                        print("Web buzzer request failed: " .. request.message)
+                        broadcastToAll(webBuzzerPlayerMap[responseData.winner] .. ' buzzed in first!')
+                        return
+                    end
+
+                    broadcastToAll(responseData.players[1].profileName .. ' buzzed in first!')
+                end)
+            end
 
             getObjectFromGUID('9fd549').AssetBundle.playTriggerEffect(0)
             scriptObject.call('hideBoardLights')
