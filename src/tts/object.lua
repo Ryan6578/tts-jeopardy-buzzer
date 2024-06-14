@@ -81,7 +81,7 @@ function onLoad()
     -- Hotkey overrides
     clearHotkeys()
     addHotkey('[1E12BA]Contestant:[-] Activate buzzer', function(pColor) playBuzz(pColor) end, false)
-    addHotkey('[1E12BA]Host:[-] Unlock buzzers', function(pColor) unlockBuzzers(nil, pColor) end, false)
+    addHotkey('[1E12BA]Host:[-] Unlock buzzers', function(pColor) unlockWebBuzzer(nil, pColor) end, false)
 
     -- Start a web buzzer session
     WebRequest.post(webBuzzerUrl .. '/api/session', {}, function(request)
