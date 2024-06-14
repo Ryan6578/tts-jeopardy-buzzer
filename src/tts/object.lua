@@ -74,10 +74,14 @@ function onLoad()
     end
 
     -- Global function override
+    _G = scriptObject.getVar('_G')
     _G['unlockBuzzersUI'] = function(player) unlockWebBuzzer(nil, host) end
+    scriptObject.setVar('_G', _G)
 
-    -- Hotkey override
-    addHotkey('[1E12BA]Host:[-] Unlock buzzers', function(pColor) unlockWebBuzzer(nil, pColor) end, false)
+    -- Hotkey overrides
+    clearHotkeys()
+    addHotkey('[1E12BA]Contestant:[-] Activate buzzer', function(pColor) playBuzz(pColor) end, false)
+    addHotkey('[1E12BA]Host:[-] Unlock buzzers', function(pColor) unlockBuzzers(nil, pColor) end, false)
 
     -- Start a web buzzer session
     WebRequest.post(webBuzzerUrl .. '/api/session', {}, function(request)
