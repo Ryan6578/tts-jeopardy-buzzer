@@ -364,7 +364,7 @@ function webBuzzerRoutine()
             scriptObject.setVar('answer', '')
         end
         scriptObject.setVar('countdownActive', false)
-    
+        scriptObject.setVar('buzzerLocked', true)
         scriptObject.call('hideBoardLights')
     end)
     return 1   
