@@ -73,10 +73,10 @@ function onLoad()
         end
     end
 
-    -- Global function override
-    _G = scriptObject.getVar('_G')
-    _G['unlockBuzzersUI'] = function(player) unlockWebBuzzer(nil, host) end
-    scriptObject.setVar('_G', _G)
+    -- Global function override (TODO later)
+    --_G = scriptObject.getVar('_G')
+    --_G['unlockBuzzersUI'] = function(player) unlockWebBuzzer(nil, host) end
+    --scriptObject.setVar('_G', _G)
 
     -- Hotkey overrides
     clearHotkeys()
