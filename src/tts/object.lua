@@ -73,6 +73,12 @@ function onLoad()
         end
     end
 
+    -- Global function override
+    _G['unlockBuzzersUI'] = function(player) unlockWebBuzzer(nil, host) end
+
+    -- Hotkey override
+    addHotkey('[1E12BA]Host:[-] Unlock buzzers', function(pColor) unlockWebBuzzer(nil, pColor) end, false)
+
     -- Start a web buzzer session
     WebRequest.post(webBuzzerUrl .. '/api/session', {}, function(request)
         if request.is_error then
